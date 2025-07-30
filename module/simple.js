@@ -9,6 +9,7 @@ import { EveryoneIsJohnActor } from "./actor.js";
 import { SimpleItemSheet } from "./item-sheet.js";
 import { EveryoneIsJohnActorSheet } from "./actor-sheet.js";
 import { preloadHandlebarsTemplates } from "./templates.js";
+const { ActorDirectory , ItemDirectory } = foundry.applications.sidebar.tabs;
 
 /* -------------------------------------------- */
 /*  Foundry VTT Initialization                  */
@@ -40,10 +41,10 @@ Hooks.once("init", async function () {
   CONFIG.Actor.entityClass = EveryoneIsJohnActor;
 
   // Register sheet application classes
-  Actors.unregisterSheet("core", ActorSheet);
-  Actors.registerSheet("eij", EveryoneIsJohnActorSheet, { makeDefault: true });
-  Items.unregisterSheet("core", ItemSheet);
-  Items.registerSheet("eij", SimpleItemSheet, { makeDefault: true });
+  //Actors.unregisterSheet("core", ActorSheet);
+  foundry.documents.collections.Actors.registerSheet("eij", EveryoneIsJohnActorSheet, { makeDefault: true });
+  //Items.unregisterSheet("core", ItemSheet);
+  foundry.documents.collections.Items.registerSheet("eij", SimpleItemSheet, { makeDefault: true });
 
   // Register system settings
   game.settings.register("fvtt-eij", "macroShorthand", {
@@ -78,7 +79,9 @@ Hooks.once("init", async function () {
   function _simpleUpdateInit(formula, notify = false) {
     // If the formula is valid, use it.
     try {
-      new Roll(formula).roll();
+      if (!formula.includes("@") && game.settings?.storage?.core) {
+				new Roll(formula).evaluate(); // ✅ sans async
+			}
       CONFIG.Combat.initiative.formula = formula;
       if (notify) {
         ui.notifications.notify(
