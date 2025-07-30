@@ -10,7 +10,7 @@
 /* } */
 
 .eij .window-content {
-  background: url("../assets/bg.jpg");
+  /*background: url("../assets/bg.jpg");*/
   height: 100%;
   padding: 5px;
   overflow-y: hidden;
@@ -53,11 +53,22 @@
 .column {
   width: 290px;
   flex: 50%;
+}
+
+body.theme-dark .column {
+  border-top: 2px solid wheat;
+  border-bottom: 2px solid wheat;
+}
+
+body.theme-light .column {
   border-top: 2px solid black;
   border-bottom: 2px solid black;
 }
 
-.column:nth-child(1) {
+body.theme-dark .column:nth-child(1) {
+  border-right: 2px solid wheat;
+}
+body.theme-light .column:nth-child(1) {
   border-right: 2px solid black;
 }
 
@@ -225,7 +236,10 @@
   font-family: Daniel;
 }
 
-.column .row.headrow{
+body.theme-dark .column .row.headrow{
+  border-bottom: 2px solid wheat;
+}
+body.theme-light .column .row.headrow{
   border-bottom: 2px solid black;
 }
 
@@ -275,9 +289,10 @@ input.skrollbox{
 input.bidbox{
   margin-top: 10px;
   margin-bottom: 10px;
-  margin-left: 100px;
 }
 
 button.willpowerButton{
   margin-top: 50px;
+  font-size: 1rem;
+  width: 100%;
 }

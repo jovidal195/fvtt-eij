@@ -31,6 +31,25 @@
     "RecoverWillpower": "Recover +1 Willpower",
     "SubstractBid": "Subtract Bid"
   },
+  "ROLL": {
+	  "RollSkill" : "Roll Skill",
+	  "Spend" : "Spend Willpower?",
+	  "Skill": "Skill",
+	  "Rolled": "Rolled: <b>{result}</b> with a spend of {spend} willpower",
+	  "Check":{
+		"Success": "Skill Check: <b style=\"color:green;\">Success!</b>",  
+		"Failure": "Skill Check: <b style=\"color:red;\">Failure</b>"
+	  }
+  },
+  "BID": {
+	"SubtractBid": "Subtract Bid",
+	"ConfirmSubtract": "Subtract from Willpower?",
+	"WarningSubtract": "This action is irreversible. Only perform it if you have the winning bid.",
+	"ActiveVoice": "Active Voice",
+	"BidSubtracted": "Bid Subtracted",
+	"RemainingWillpower": "Remaining Willpower",
+	"Cancel": "Close"
+  },
   "ITEM": {
     "Qty": "Quantity",
     "Weight": "Weight",

@@ -31,6 +31,25 @@
     "RecoverWillpower": "Récupérer +1 Volonté",
     "SubstractBid": "Soustraire l'enchère"
   },
+  "ROLL": {
+	  "RollSkill" : "Jet de compétence",
+	  "Spend" : "Utiliser de la Volonté ?",
+	  "Skill": "Compétence",
+	  "Rolled": "Jet : <b>{result}</b> avec une dépense de {spend} Volonté",
+	  "Check":{
+		"Success": "Vérification : <b style=\"color:green;\">Succès !</b>",  
+		"Failure": "Vérification : <b style=\"color:red;\">Échec</b>"
+	  }
+  },
+  "BID": {
+	"SubtractBid": "Soustraire l'enchère",
+	"ConfirmSubtract": "Soustraire de la Volonté ?",
+	"WarningSubtract": "Cette action est irréversible. N'effectuez cela que si vous avez remporté l'enchère.",
+	"ActiveVoice": "Voix active",
+	"BidSubtracted": "Enchère soustraite",
+	"RemainingWillpower": "Volonté restante",
+	"Cancel": "Fermer"
+  },
   "ITEM": {
     "Qty": "Quantité",
     "Weight": "Poids",

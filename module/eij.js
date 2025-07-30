@@ -1,71 +1,68 @@
+const { DialogV2 } = foundry.applications.api;
 /*
 @param {String} characterName - The name of the character passed in as a string from actor-sheet.js
 @param {Integer} skNum - The skill number passed in from actor-sheet.js
 */
 function skillroll(characterName, skNum) {
-  let dialogTemplate =
-    '<h1>Spend Willpower?:</h1> <input class="skrollbox" data-dtype="Number" placeholder="0">';
-  let thisActor = game.actors.getName(characterName);
+  const thisActor = game.actors.getName(characterName);
+  if (!thisActor) return;
 
-  new Dialog({
-    title: "Roll Skill",
-    content: dialogTemplate,
-    buttons: {
-      rollSk: {
-        label: "Roll Skill",
-        callback: async (html) => {
-          let spend = 0;
+  const content = document.createElement("div");
+  content.innerHTML = `
+      <label for="willpowerSpend" style="font-size: 25px;font-family: Daniel;">${game.i18n.localize("ROLL.Spend")}</label>
+      <input type="number" name="willpowerSpend" placeholder="0" value="0" />
+  `;
 
-          if ($(html).find("input.skrollbox")[0].value > 0) {
-            spend = $(html).find("input.skrollbox")[0].value;
-          }
-
-          let newRollString = `1d6 + ${spend}`;
-          let roll = new Roll(newRollString);
-          await roll.evaluate();
-          let result = roll.total;
-          let chatTemplate = "";
-          let skillDesc = "";
-
-          switch (skNum) {
-            case 1:
-              skillDesc = thisActor.system.skills.skill1;
-              break;
-            case 2:
-              skillDesc = thisActor.system.skills.skill2;
-              break;
-            case 3:
-              skillDesc = thisActor.system.skills.skill3;
-              break;
-          }
-
-          subtractWillpower(characterName, spend);
-
-          if (result >= 3) {
-            chatTemplate = `
-              <p>Skill: ${skillDesc}</p>
-              <p>Rolled: <b>${result}</b> with a spend of ${spend} willpower</p>
-              <p>Skill Check: Success!</p>
-              `;
-          } else {
-            chatTemplate = `
-              <p>Skill: ${skillDesc}</p>
-              <p>Rolled: <b>${result}</b> with a spend of ${spend} willpower</p>
-              <p>Skill Check: Failure</p>
-              `;
-          }
-
-          ChatMessage.create({
-            content: chatTemplate,
-            roll: roll,
-            speaker: { alias: characterName },
-          });
-        },
+  const dialog = new DialogV2({
+    window: {title: game.i18n.localize("ROLL.RollSkill")},
+    content,
+    buttons: [
+      {
+				action: "rollSkill",
+        label: game.i18n.localize("ROLL.RollSkill"),
+        type: "submit",
+        value: "roll",
+        icon: "fa-solid fa-dice-d20"
       },
-      close: {
-        label: "Close",
-      },
-    },
+      {
+        label: "Fermer",
+        type: "cancel"
+      }
+    ],
+    submit: async (action, html) => {
+      if (action !== "rollSkill") return;
+
+      const input = html.element.querySelector("input[name='willpowerSpend']");
+			let spend = 0;
+			if (input && Number(input.value) > 0) {
+				spend = input.value;
+			}
+
+      const roll = new Roll(`1d6 + ${spend}`);
+      await roll.evaluate({ async: true });
+      const resultat = roll.total;
+
+      let skillDesc = "";
+      switch (skNum) {
+        case 1: skillDesc = thisActor.system.skills.skill1; break;
+        case 2: skillDesc = thisActor.system.skills.skill2; break;
+        case 3: skillDesc = thisActor.system.skills.skill3; break;
+      }
+
+      subtractWillpower(characterName, spend);
+
+      const chatTemplate = `
+				<p>${game.i18n.localize("ROLL.Skill")}: ${skillDesc}</p>
+				<p>${game.i18n.format("ROLL.Rolled", { result: resultat, spend })}</p>
+				<p>${game.i18n.localize(resultat >= 3 ? "ROLL.Check.Success" : "ROLL.Check.Failure")}</p>
+			`;
+
+      ChatMessage.create({
+        content: chatTemplate,
+        roll,
+        speaker: { alias: characterName }
+      });
+    }
   }).render(true);
 }
 
@@ -74,7 +71,9 @@ function skillroll(characterName, skNum) {
 @param {Integer} obLvl - The level of the obsession.
 */
 function updateScore(characterName, obLvl) {
+	console.log(characterName);
   let thisActor = game.actors.getName(characterName);
+	console.log(thisActor);
   let messageContent = "";
   let newTally = 0;
   let newTotal = 0;
@@ -148,42 +147,56 @@ function subtractWillpower(characterName, amt) {
 @param {String} characterName - The name of the character passed in as a string from actor-sheet.js
 @param {Integer} skNum - The skill number passed in from actor-sheet.js
 */
-function subtractBid(characterName) {
-  let dialogTemplate =
-    '<h1>Subtract Bid?:</h1> <p> Subtract Bid from total willpower? There is no undoing this action. Only perform this action after you know that you have the winning bid.</p> <input class="bidbox" data-dtype="Number" placeholder="0"></select>';
-  let thisActor = game.actors.getName(characterName);
+async function subtractBid(characterName) {
+  const thisActor = game.actors.getName(characterName);
+  if (!thisActor) return;
 
-  new Dialog({
-    title: "Subtract Bid",
-    content: dialogTemplate,
-    buttons: {
-      subBid: {
-        label: "Subtract Bid",
-        callback: (html) => {
-          let subtractThis = 0;
-          if ($(html).find("input.bidbox")[0].value > 0) {
-            subtractThis = $(html).find("input.bidbox")[0].value;
-          }
+  const content = document.createElement("div");
+  content.innerHTML = `
+    <div class="dialog-content" style="display: flex; flex-direction: column; gap: 1em;">
+      <h2 style="font-family: Daniel;">${game.i18n.localize("BID.ConfirmSubtract")}</h2>
+      <p style="font-family: sans-serif; font-size: 14px;">${game.i18n.localize("BID.WarningSubtract")}</p>
+      <input type="number" name="bidAmount" class="bidbox" placeholder="0" value="0" style="font-size: 20px;" />
+    </div>
+  `;
 
-          subtractWillpower(characterName, subtractThis);
-
-          let chatTemplate = `
-            <p><b>Active Voice</b>: ${characterName}</p>
-            <p><b>Bid Subtracted from Willpower:</b> ${subtractThis}</p>
-            <p><b>New willpower:</b> ${
-              thisActor.system.willpower - subtractThis
-            }</p>
-            `;
-          ChatMessage.create({
-            content: chatTemplate,
-            speaker: { alias: characterName },
-          });
-        },
+  new DialogV2({
+    window: { title: game.i18n.localize("BID.SubtractBid") },
+    content,
+    buttons: [
+      {
+        action: "confirm",
+        label: game.i18n.localize("BID.SubtractBid"),
+        icon: "fa-solid fa-minus",
+        default: true
       },
-      close: {
-        label: "Close",
-      },
-    },
+      {
+        action: "cancel",
+        label: game.i18n.localize("BID.Cancel")
+      }
+    ],
+    submit: async (action, html) => {
+      if (action === "cancel") return html.close();
+      if (action !== "confirm") return;
+
+      const input = html.element.querySelector("input.bidbox");
+      const subtractThis = input && Number(input.value) > 0 ? Number(input.value) : 0;
+
+      subtractWillpower(characterName, subtractThis);
+
+      const chatTemplate = `
+        <p><b>${game.i18n.localize("BID.ActiveVoice")}:</b> ${characterName}</p>
+        <p><b>${game.i18n.localize("BID.BidSubtracted")}:</b> ${subtractThis}</p>
+        <p><b>${game.i18n.localize("BID.RemainingWillpower")}:</b> ${thisActor.system.willpower - subtractThis}</p>
+      `;
+
+      ChatMessage.create({
+        content: chatTemplate,
+        speaker: { alias: characterName }
+      });
+
+      html.close();
+    }
   }).render(true);
 }
 
