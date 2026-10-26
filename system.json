@@ -63,7 +63,7 @@
   "primaryTokenAttribute": "willpower",
   "url": "https://github.com/jovidal195/fvtt-eij",
   "manifest": "https://raw.githubusercontent.com/jovidal195/fvtt-eij/refs/tags/v3.2.4/system.json",
-  "download": "https://github.com/jovidal195/fvtt-eij/archive/refs/tags/3.2.4.zip",
+  "download": "https://github.com/jovidal195/fvtt-eij/archive/refs/tags/v3.2.4.zip",
   "background": "systems/fvtt-eij/assets/eij_background.jpg",
   "license": "LICENSE.txt"
 }
