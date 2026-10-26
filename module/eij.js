@@ -39,7 +39,7 @@ function skillroll(characterName, skNum) {
 			}
 
       const roll = new Roll(`1d6 + ${spend}`);
-      await roll.evaluate({ async: true });
+      await roll.evaluate({ });
       const resultat = roll.total;
 
       let skillDesc = "";
@@ -71,9 +71,7 @@ function skillroll(characterName, skNum) {
 @param {Integer} obLvl - The level of the obsession.
 */
 function updateScore(characterName, obLvl) {
-	console.log(characterName);
   let thisActor = game.actors.getName(characterName);
-	console.log(thisActor);
   let messageContent = "";
   let newTally = 0;
   let newTotal = 0;

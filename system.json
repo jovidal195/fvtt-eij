@@ -2,10 +2,10 @@
   "id": "fvtt-eij",
   "title": "Everyone is John",
   "description": "Support for Everyone is John by Michael Sullivan, a competitive roleplaying game for three or more horrible people. Implementation based entirely on the Simple Worldbuilding System by Atropos. Significant overhauls to bring compatibility up-to-date by Galen White.",
-  "version": "3.2.3",
+  "version": "3.2.4",
   "compatibility": {
     "minimum": "13",
-    "verified": "13.346"
+    "verified": "14"
   },
   "authors": [
     { "name": "Parker" },
@@ -30,7 +30,8 @@
   ],
   "esmodules": [
     "./module/simple.js",
-    "./module/eij.js"
+    "./module/eij.js",
+	"./module/data-models.js"
   ],
   "styles": [
     "./styles/simple.css"
@@ -51,9 +52,18 @@
 	  "distance": 5,
 	  "units": "ft"
 	},
+  "documentTypes": {
+    "Actor": {
+	  "character": {}
+    },
+    "Item": {
+	  "item": {}
+    }
+  },
   "primaryTokenAttribute": "willpower",
-  "url": "https://github.com/sparkcity/fvtt-eij",
-  "manifest": "https://github.com/sparkcity/fvtt-eij/releases/latest/download/system.json",
-  "download": "https://github.com/sparkcity/fvtt-eij/releases/latest/download/system.zip",
+  "url": "https://github.com/jovidal195/fvtt-eij",
+  "manifest": "https://raw.githubusercontent.com/jovidal195/fvtt-eij/refs/tags/v3.2.4/system.json",
+  "download": "https://github.com/jovidal195/fvtt-eij/archive/refs/tags/3.2.4.zip",
+  "background": "systems/fvtt-eij/assets/eij_background.jpg",
   "license": "LICENSE.txt"
 }

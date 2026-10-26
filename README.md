@@ -1,4 +1,4 @@
-[![Foundry](https://img.shields.io/badge/Foundry%40CompatibleCore-12-red)](https://foundryvtt.com/)[![Foundry](https://img.shields.io/badge/Foundry%40CompatibleCore-13-brightgreen)](https://foundryvtt.com/)
+[![Foundry](https://img.shields.io/badge/Foundry%40CompatibleCore-12-red)](https://foundryvtt.com/)[![Foundry](https://img.shields.io/badge/Foundry%40CompatibleCore-13-brightgreen)](https://foundryvtt.com/)[![Foundry](https://img.shields.io/badge/Foundry%40CompatibleCore-14-brightgreen)](https://foundryvtt.com/)
 ![GitHub All Releases](https://img.shields.io/github/downloads/sparkcity/fvtt-eij/total)
 ![GitHub Latest Release](https://img.shields.io/github/downloads/sparkcity/fvtt-eij/latest/total)
 
